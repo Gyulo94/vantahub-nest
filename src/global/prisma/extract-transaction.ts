@@ -1,4 +1,4 @@
-import { TransactionOptions } from '../decorators/transactional.decorator';
+import { TransactionOptions } from '../decorator/transactional.decorator';
 import { ManualTransaction } from './manual-transaction';
 
 export async function extractTransaction(

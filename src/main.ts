@@ -1,8 +1,32 @@
-import { NestFactory } from '@nestjs/core';
+console.log('[VERY_EARLY_DEBUG] Main TS file loaded and starting bootstrap');
+
+import { ValidationPipe } from '@nestjs/common';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { ApiInterceptor } from './global/api/api.interceptor';
+import { HttpExceptionFilter } from './global/filter/http-exception.filter';
+import { winstonLogger } from './global/utils/winston.config';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  await app.listen(process.env.PORT ?? 8000);
+  const app = await NestFactory.create(AppModule, {
+    abortOnError: false,
+  });
+  const logger = winstonLogger;
+  app.setGlobalPrefix('api');
+  app.useLogger(logger);
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+    }),
+  );
+  const reflector = app.get(Reflector);
+  app.useGlobalFilters(new HttpExceptionFilter(logger));
+  app.useGlobalInterceptors(new ApiInterceptor(reflector));
+  await app.listen(process.env.PORT);
 }
 bootstrap();

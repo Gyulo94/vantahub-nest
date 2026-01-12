@@ -1,7 +1,7 @@
+import { Prisma } from '@prisma/client';
+import { TransactionOptions } from '../decorator/transactional.decorator';
 import { extractTransaction } from './extract-transaction';
 import transactionStorage from './transaction.storage';
-import { TransactionOptions } from '../decorators/transactional.decorator';
-import { Prisma } from '@prisma/client';
 
 export const createTransactionExtension = (options?: TransactionOptions) =>
   Prisma.defineExtension((prisma) => {
