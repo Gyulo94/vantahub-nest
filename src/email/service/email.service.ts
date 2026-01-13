@@ -69,10 +69,9 @@ export class EmailService {
     this.LOGGER.log(
       `7. 받는 사람: ${mailOptions.to}, 제목: ${mailOptions.subject}`,
     );
-    this.LOGGER.log(`8. 이메일 전송 내용: ${mailOptions.html}`);
-    this.LOGGER.log(`9. 이메일 전송 시작...`);
+    this.LOGGER.log(`8. 이메일 전송 시작...`);
     await this.transporter.sendMail(mailOptions);
-    this.LOGGER.log(`10. 이메일 전송 완료`);
+    this.LOGGER.log(`9. 이메일 전송 완료`);
     this.LOGGER.log(
       `---------------------이메일 인증 메일 전송 서비스 종료--------------------`,
     );
@@ -93,15 +92,15 @@ export class EmailService {
     const subject =
       type === 'register'
         ? `${process.env.APP_NAME} - Correo de registro`
-        : `${process.env.APP_NAME} - Buscar contraseña`;
+        : `${process.env.APP_NAME} - Restablecer Contraseña`;
     const actionText =
-      type === 'register' ? 'el registro' : 'buscar contraseña';
+      type === 'register' ? 'el registro' : 'el restablecimiento de contraseña';
     const description =
       type === 'register'
         ? 'Por favor, continúe con el registro.'
-        : 'Por favor, continúe con la búsqueda de contraseña.';
+        : 'Por favor, continúe con el restablecimiento de contraseña.';
     const buttonText =
-      type === 'register' ? 'Registrarse' : 'Buscar contraseña';
+      type === 'register' ? 'Registrarse' : 'Restablecer Contraseña';
 
     return {
       to: email,

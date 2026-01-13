@@ -104,4 +104,24 @@ export class AuthController {
     );
     return response;
   }
+
+  @Post('send-reset-password-email')
+  @Message(ResponseMessage.SEND_EMAIL_SUCCESS)
+  async sendResetPasswordEmail(@Body('email') email: string): Promise<void> {
+    this.LOGGER.log(
+      `--------------------비밀번호 재설정 이메일 전송 컨트롤러 실행--------------------`,
+    );
+    this.LOGGER.log(`비밀번호 재설정 이메일 전송 요청 받음`);
+    await this.emailService.sendVerificationMail(email, 'reset');
+    this.LOGGER.log(`비밀번호 재설정 이메일 전송 완료`);
+    this.LOGGER.log(
+      `--------------------비밀번호 재설정 이메일 전송 컨트롤러 종료--------------------`,
+    );
+  }
+
+  @Post('reset-password')
+  @Message(ResponseMessage.RESET_PASSWORD_SUCCESS)
+  async resetPassword(@Body() request: Partial<UserRequest>): Promise<void> {
+    return await this.userService.resetPassword(request);
+  }
 }

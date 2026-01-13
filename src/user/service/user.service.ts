@@ -93,10 +93,7 @@ export class UserService {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     this.LOGGER.log(`3. 비밀번호 해싱 완료 및 유저 비밀번호 업데이트`);
-    await this.userRepository.update(
-      user.id,
-      request.toModel(user.id, hashedPassword, user.imageId),
-    );
+    await this.userRepository.updatePassword(user.id, hashedPassword);
 
     this.LOGGER.log(`4. 이메일 토큰 삭제`);
     await this.redis.del(token);

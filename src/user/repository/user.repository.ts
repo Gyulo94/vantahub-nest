@@ -36,10 +36,10 @@ export class UserRepository {
     return user;
   }
 
-  async update(id: string, data: Prisma.UserUpdateInput): Promise<User> {
+  async updatePassword(id: string, hashedPassword: string): Promise<User> {
     const updatedUser = await this.prisma.user.update({
       where: { id },
-      data,
+      data: { password: hashedPassword },
       include: {
         image: true,
       },
