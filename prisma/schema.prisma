@@ -22,8 +22,90 @@ model User {
   id            String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   email         String          @unique
   name          String?
+  password      String?
+  imageId       String?         @unique @db.Uuid
+  image         Image?          @relation(fields: [imageId], references: [id])
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
   role          Role            @default(USER)
   provider      Provider        @default(EMAIL)
+
+  readingProgresses ReadingProgress[]
+  reviews       Review[]
+  
+  @@index([role])
+  @@index([provider])
+}
+
+model Image {
+  id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  url           String
+  user          User?
+  book          Book?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Book {
+  id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title         String
+  author        String
+  description   String?
+  categoryId    String       @db.Uuid
+  publishedAt   DateTime     @default(now())
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  pdfUrl        String?
+  slug          String       @unique
+  totalPages    Int?
+  
+  imageId      String?      @db.Uuid @unique
+  image        Image?       @relation(fields: [imageId], references: [id])
+  category      Category     @relation(fields: [categoryId], references: [id])
+  readingProgresses ReadingProgress[]
+  reviews       Review[]
+
+  @@index([title])
+  @@index([author])
+  @@index([publishedAt]) 
+}
+
+model Category {
+  id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name          String       @unique
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  books         Book[]
+}
+
+model ReadingProgress {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId        String    @db.Uuid
+  bookId        String    @db.Uuid
+  currentPage   Int       @default(1)
+  lastReadAt    DateTime  @updatedAt
+  startedAt     DateTime  @default(now())
+
+  user          User      @relation(fields: [userId], references: [id])
+  book          Book      @relation(fields: [bookId], references: [id])
+
+  @@index([lastReadAt])
+  @@unique([userId, bookId])
+}
+
+model Review {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId        String    @db.Uuid
+  bookId        String    @db.Uuid
+  rating        Int
+  comment       String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  user          User      @relation(fields: [userId], references: [id])
+  book          Book      @relation(fields: [bookId], references: [id])
+
+  @@index([rating])
+  @@index([createdAt])
+  @@unique([userId, bookId])
 }
