@@ -6,6 +6,7 @@ export enum ErrorCode {
   NOT_FOUND_EMAIL = 'AUTH_002',
   NOT_ALLOWED_SOCIAL_USER = 'AUTH_003',
   VERIFICATION_EMAIL_TOKEN_FAILED = 'AUTH_004',
+  INCORRECT_EMAIL_OR_PASSWORD = 'AUTH_005',
 
   // Errores de usuario
   USER_NOT_FOUND = 'USER_001',
@@ -15,6 +16,7 @@ export enum ErrorCode {
   INTERNAL_SERVER_ERROR = 'SERVER_001',
   BAD_REQUEST = 'COMMON_001',
   FORBIDDEN = 'COMMON_002',
+  UNAUTHORIZED = 'COMMON_003',
 }
 
 export const ErrorCodeMap: Record<
@@ -37,6 +39,10 @@ export const ErrorCodeMap: Record<
   [ErrorCode.VERIFICATION_EMAIL_TOKEN_FAILED]: {
     status: HttpStatus.BAD_REQUEST,
     message: 'La verificación del token de correo electrónico ha fallado.',
+  },
+  [ErrorCode.INCORRECT_EMAIL_OR_PASSWORD]: {
+    status: HttpStatus.UNAUTHORIZED,
+    message: 'Correo electrónico o contraseña incorrectos.',
   },
 
   // Errores de usuario
@@ -61,5 +67,9 @@ export const ErrorCodeMap: Record<
   [ErrorCode.FORBIDDEN]: {
     status: HttpStatus.FORBIDDEN,
     message: 'Acceso denegado.',
+  },
+  [ErrorCode.UNAUTHORIZED]: {
+    status: HttpStatus.UNAUTHORIZED,
+    message: 'No autorizado.',
   },
 };

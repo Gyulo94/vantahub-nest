@@ -11,10 +11,24 @@ import { EmailModule } from './email/email.module';
 import { RedisModule } from './redis/redis.module';
 import { UserModule } from './user/user.module';
 import { ImageModule } from './image/image.module';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtGuard } from './auth/guards/jwt.guard';
 @Module({
-  imports: [GlobalModule, AuthModule, EmailModule, RedisModule, UserModule, ImageModule],
+  imports: [
+    GlobalModule,
+    AuthModule,
+    EmailModule,
+    RedisModule,
+    UserModule,
+    ImageModule,
+  ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtGuard,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
