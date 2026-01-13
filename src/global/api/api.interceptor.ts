@@ -8,7 +8,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { SUCCESS_MESSAGE_METADATA } from 'src/global/decorator/message.decorator';
+import { SUCCESS_MESSAGE_METADATA } from 'src/global/decorators/message.decorator';
 import { Api } from './api.interface';
 
 @Injectable()
