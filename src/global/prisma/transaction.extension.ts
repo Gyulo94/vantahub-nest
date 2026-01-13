@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client';
-import { TransactionOptions } from '../decorator/transactional.decorator';
+import { TransactionOptions } from '../decorators/transactional.decorator';
 import { extractTransaction } from './extract-transaction';
 import transactionStorage from './transaction.storage';
 

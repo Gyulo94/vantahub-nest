@@ -1,5 +1,5 @@
 import { AsyncLocalStorage } from 'async_hooks';
-import { TransactionOptions } from '../decorator/transactional.decorator';
+import { TransactionOptions } from '../decorators/transactional.decorator';
 import { ManualTransaction } from './manual-transaction';
 
 type TransactionStorageDataType = {
