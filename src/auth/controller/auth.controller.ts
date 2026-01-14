@@ -124,4 +124,19 @@ export class AuthController {
   async resetPassword(@Body() request: Partial<UserRequest>): Promise<void> {
     return await this.userService.resetPassword(request);
   }
+
+  @Post('social-login')
+  @Message(ResponseMessage.LOGIN_SUCCESS)
+  async socialLogin(@Body() request: UserRequest): Promise<AuthResponse> {
+    this.LOGGER.log(
+      '--------------------소셜 로그인 (가입/로그인) 컨트롤러 실행--------------------',
+    );
+    this.LOGGER.log(`소셜 로그인 요청 받음`);
+    const response: AuthResponse = await this.authService.socialLogin(request);
+    this.LOGGER.log(`소셜 로그인 완료 ${response.user.name}님 환영합니다!`);
+    this.LOGGER.log(
+      '--------------------소셜 로그인 (가입/로그인) 컨트롤러 종료--------------------',
+    );
+    return response;
+  }
 }

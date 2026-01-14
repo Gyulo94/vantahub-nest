@@ -11,6 +11,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/service/user.service';
 import { User } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
+import { UserRequest } from 'src/user/request/user.request';
 
 const ACCESS_TOKEN_EXPIRES_IN = parseInt(process.env.ACCESS_TOKEN_EXPIRES_IN);
 const REFRESH_TOKEN_EXPIRES_IN = parseInt(process.env.REFRESH_TOKEN_EXPIRES_IN);
@@ -116,6 +117,48 @@ export class AuthService {
     } else {
       this.LOGGER.error(`토큰이 존재하지 않으므로 예외 발생`);
       throw new ApiException(ErrorCode.VERIFICATION_EMAIL_TOKEN_FAILED);
+    }
+  }
+
+  async socialLogin(request: UserRequest): Promise<AuthResponse> {
+    const { email } = request;
+    this.LOGGER.log(
+      `--------------------소셜 로그인(가입/로그인) 서비스 실행-------------------`,
+    );
+
+    let user: UserResponse;
+    let response: AuthResponse;
+
+    const existingUser: User = await this.userService.findByEmail(email);
+    this.LOGGER.log(
+      `1. 유저가 존재하는가 ?: ${existingUser ? '존재하므로 로그인으로 이동' : '존재하지 않으므로 회원가입으로 이동'}`,
+    );
+
+    if (!existingUser) {
+      this.LOGGER.log(`2. 소셜 로그인 유저 회원가입 진행`);
+      user = await this.userService.register(request);
+      const payload = {
+        id: user.id,
+        role: user.role,
+      };
+      const serverTokens = await this.generateTokens(payload);
+      response = AuthResponse.fromModel(user, serverTokens);
+      return response;
+    } else {
+      user = UserResponse.fromModel(existingUser);
+
+      const payload = {
+        id: user.id,
+        role: user.role,
+      };
+      this.LOGGER.log(`3. 소셜 로그인 JWT 토큰 생성`);
+      const serverTokens = await this.generateTokens(payload);
+
+      response = AuthResponse.fromModel(user, serverTokens);
+      this.LOGGER.log(
+        `--------------------소셜 로그인(가입/로그인) 서비스 종료-------------------`,
+      );
+      return response;
     }
   }
 }
