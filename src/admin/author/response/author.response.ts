@@ -1,0 +1,18 @@
+import { Author, Image } from '@prisma/client';
+import { ImageResponse } from 'src/file/response/image.response';
+
+export class AuthorResponse {
+  id: string;
+  name: string;
+  bio?: string;
+  image: ImageResponse;
+
+  static fromModel(model: Author & { image?: Image }): AuthorResponse {
+    const response = new AuthorResponse();
+    response.id = model.id;
+    response.name = model.name;
+    response.bio = model.bio;
+    response.image = model.image ? ImageResponse.fromModel(model.image) : null;
+    return response;
+  }
+}
