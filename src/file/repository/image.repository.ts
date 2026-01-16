@@ -14,4 +14,15 @@ export class ImageRepository {
     });
     return result;
   }
+
+  async saveAll(images: string[]): Promise<Image[]> {
+    const result = await Promise.all(
+      images.map((url) =>
+        this.prisma.image.create({
+          data: { url },
+        }),
+      ),
+    );
+    return result;
+  }
 }
