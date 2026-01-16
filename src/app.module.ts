@@ -10,9 +10,11 @@ import { AuthModule } from './auth/auth.module';
 import { EmailModule } from './email/email.module';
 import { RedisModule } from './redis/redis.module';
 import { UserModule } from './user/user.module';
-import { ImageModule } from './image/image.module';
+import { FileModule } from './file/file.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtGuard } from './auth/guards/jwt.guard';
+import { RoleGuard } from './auth/guards/role.guard';
+import { AdminModule } from './admin/admin.module';
 @Module({
   imports: [
     GlobalModule,
@@ -20,13 +22,18 @@ import { JwtGuard } from './auth/guards/jwt.guard';
     EmailModule,
     RedisModule,
     UserModule,
-    ImageModule,
+    FileModule,
+    AdminModule,
   ],
   controllers: [],
   providers: [
     {
       provide: APP_GUARD,
       useClass: JwtGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RoleGuard,
     },
   ],
 })
