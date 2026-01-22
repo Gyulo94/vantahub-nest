@@ -5,6 +5,8 @@ import { ImageService } from 'src/file/service/image.service';
 import { Transactional } from 'src/global/decorators/transactional.decorator';
 import { ImageResponse } from 'src/file/response/image.response';
 import { AuthorResponse } from '../response/author.response';
+import { ApiException } from 'src/global/exception/api.exception';
+import { ErrorCode } from 'src/global/enum/error-code.enum';
 
 @Injectable()
 export class AuthorService {
@@ -39,6 +41,43 @@ export class AuthorService {
   async findAll(): Promise<AuthorResponse[]> {
     const authors = await this.authorRepository.findAll();
     const response = authors.map((author) => AuthorResponse.fromModel(author));
+    return response;
+  }
+
+  async findById(id: string): Promise<AuthorResponse> {
+    const author = await this.authorRepository.findById(id);
+    if (!author) {
+      throw new ApiException(ErrorCode.AUTHOR_NOT_FOUND);
+    }
+    const response = AuthorResponse.fromModel(author);
+    return response;
+  }
+
+  async updateAuthor(id: string, request: AuthorRequest) {
+    const author = await this.authorRepository.findById(id);
+    if (!author) {
+      throw new ApiException(ErrorCode.AUTHOR_NOT_FOUND);
+    }
+
+    const updateAuthorEntity = await this.authorRepository.update(
+      id,
+      AuthorRequest.toModel(request),
+    );
+    const authorId = updateAuthorEntity.id;
+    if (request.image) {
+      const savedImages: ImageResponse[] = await this.imageService.updateImages(
+        {
+          id: authorId,
+          images: [request.image],
+          existingImages: [author.image.url],
+          entity: 'author',
+        },
+      );
+      const image = savedImages[0];
+      await this.authorRepository.updateAuthorImage(authorId, image.id);
+    }
+    const newAuthor = await this.authorRepository.findById(authorId);
+    const response = AuthorResponse.fromModel(newAuthor);
     return response;
   }
 }

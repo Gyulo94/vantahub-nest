@@ -12,6 +12,9 @@ export enum ErrorCode {
   USER_NOT_FOUND = 'USER_001',
   SAME_ORIGINAL_PASSWORD = 'USER_002',
 
+  // Errores de author
+  AUTHOR_NOT_FOUND = 'AUTHOR_001',
+
   // Otros errores generales
   INTERNAL_SERVER_ERROR = 'SERVER_001',
   BAD_REQUEST = 'COMMON_001',
@@ -53,6 +56,12 @@ export const ErrorCodeMap: Record<
   [ErrorCode.SAME_ORIGINAL_PASSWORD]: {
     status: HttpStatus.BAD_REQUEST,
     message: 'La nueva contraseña no puede ser igual a la contraseña original.',
+  },
+
+  // Errores de author
+  [ErrorCode.AUTHOR_NOT_FOUND]: {
+    status: HttpStatus.NOT_FOUND,
+    message: 'Author no encontrado.',
   },
 
   // Otros errores generales

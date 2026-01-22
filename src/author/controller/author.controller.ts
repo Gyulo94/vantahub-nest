@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { AuthorService } from '../service/author.service';
 import { AuthorRequest } from '../request/author.request';
 import { Role } from 'src/global/decorators/role.decorator';
@@ -21,6 +21,23 @@ export class AuthorController {
   @Get('all')
   async findAll(): Promise<AuthorResponse[]> {
     const response = await this.authorService.findAll();
+    return response;
+  }
+
+  @Get(':id')
+  async findById(@Param('id') id: string): Promise<AuthorResponse> {
+    const response = await this.authorService.findById(id);
+    return response;
+  }
+
+  @Role('ADMIN')
+  @Put('update/:id')
+  @Message(ResponseMessage.UPDATE_AUTHOR_SUCCESS)
+  async updateAuthor(
+    @Param('id') id: string,
+    @Body() request: AuthorRequest,
+  ): Promise<AuthorResponse> {
+    const response = await this.authorService.updateAuthor(id, request);
     return response;
   }
 }

@@ -74,4 +74,23 @@ export class ImageService {
     );
     return response;
   }
+
+  @Transactional()
+  async updateImages(request: ImageRequest): Promise<ImageResponse[]> {
+    const { data: images } = await firstValueFrom(
+      this.httpSerivce
+        .put<string[]>(`${this.FILE_URL}/vantahub/update`, request)
+        .pipe(
+          catchError((error) => {
+            this.LOGGER.error('Error uploading image', error);
+            throw error;
+          }),
+        ),
+    );
+    const savedImages = await this.imageRepository.saveAll(images);
+    const response: ImageResponse[] = savedImages.map((image) =>
+      ImageResponse.fromModel(image),
+    );
+    return response;
+  }
 }

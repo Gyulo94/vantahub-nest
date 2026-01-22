@@ -29,9 +29,20 @@ export class AuthorRepository {
 
   async findAll(): Promise<Author[]> {
     const result = await this.prisma.author.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
       include: {
         image: true,
       },
+    });
+    return result;
+  }
+
+  async update(id: string, data: Prisma.AuthorCreateInput): Promise<Author> {
+    const result = await this.prisma.author.update({
+      where: { id },
+      data,
     });
     return result;
   }

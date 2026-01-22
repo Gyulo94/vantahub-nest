@@ -5,5 +5,6 @@ export enum ResponseMessage {
   RESET_PASSWORD_SUCCESS = 'La contraseña se ha restablecido correctamente.',
 
   CREATE_AUTHOR_SUCCESS = 'El autor se ha creado exitosamente.',
+  UPDATE_AUTHOR_SUCCESS = 'El autor se ha cambiado exitosamente.',
   CREATE_CATEGORY_SUCCESS = 'La categoría se ha creado exitosamente.',
 }
