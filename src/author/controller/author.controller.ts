@@ -18,7 +18,6 @@ export class AuthorController {
     return response;
   }
 
-  @Role('ADMIN')
   @Get('all')
   async findAll(): Promise<AuthorResponse[]> {
     const response = await this.authorService.findAll();

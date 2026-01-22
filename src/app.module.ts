@@ -14,7 +14,8 @@ import { FileModule } from './file/file.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtGuard } from './auth/guards/jwt.guard';
 import { RoleGuard } from './auth/guards/role.guard';
-import { AdminModule } from './admin/admin.module';
+import { AuthorModule } from './author/author.module';
+import { CategoryModule } from './category/category.module';
 @Module({
   imports: [
     GlobalModule,
@@ -23,7 +24,8 @@ import { AdminModule } from './admin/admin.module';
     RedisModule,
     UserModule,
     FileModule,
-    AdminModule,
+    AuthorModule,
+    CategoryModule,
   ],
   controllers: [],
   providers: [
