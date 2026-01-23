@@ -66,6 +66,7 @@ export class AuthorService {
     const authorId = updateAuthorEntity.id;
     if (request.image) {
       const savedImages: ImageResponse[] = await this.imageService.updateImages(
+        author.imageId,
         {
           id: authorId,
           images: [request.image],
@@ -73,11 +74,33 @@ export class AuthorService {
           entity: 'author',
         },
       );
-      const image = savedImages[0];
-      await this.authorRepository.updateAuthorImage(authorId, image.id);
+      const imageId = savedImages[0].id;
+      await this.authorRepository.updateAuthorImage(authorId, imageId);
     }
     const newAuthor = await this.authorRepository.findById(authorId);
     const response = AuthorResponse.fromModel(newAuthor);
     return response;
+  }
+
+  @Transactional()
+  async deleteManyAuthors(ids: string[]): Promise<void> {
+    console.log('ids: ', ids);
+
+    const authors = await this.authorRepository.findAll(ids);
+    if (authors.length !== ids.length) {
+      throw new ApiException(ErrorCode.AUTHOR_NOT_FOUND);
+    }
+
+    const imageIds = authors.map((author) => author.imageId);
+
+    const request = {
+      ids,
+      serviceName: 'vantahub',
+      entity: 'author',
+      images: [],
+    };
+
+    await this.imageService.deleteImages(imageIds, request);
+    await this.authorRepository.deleteMany(ids);
   }
 }

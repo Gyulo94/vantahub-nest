@@ -1,8 +1,9 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsArray, IsOptional, IsString } from 'class-validator';
 
 export class ImageRequest {
   @IsString()
-  id: string;
+  @IsOptional()
+  id?: string;
 
   @IsString({ each: true })
   images: string[];
@@ -14,4 +15,13 @@ export class ImageRequest {
   @IsOptional()
   @IsString()
   entity?: string;
+
+  @IsOptional()
+  @IsString()
+  serviceName?: string;
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  ids?: string[];
 }

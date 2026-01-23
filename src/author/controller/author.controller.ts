@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { AuthorService } from '../service/author.service';
 import { AuthorRequest } from '../request/author.request';
 import { Role } from 'src/global/decorators/role.decorator';
@@ -39,5 +47,12 @@ export class AuthorController {
   ): Promise<AuthorResponse> {
     const response = await this.authorService.updateAuthor(id, request);
     return response;
+  }
+
+  @Role('ADMIN')
+  @Delete('delete')
+  @Message(ResponseMessage.DELETE_AUTHOR_SUCCESS)
+  async deleteManyAuthors(@Body('ids') ids: string[]): Promise<void> {
+    await this.authorService.deleteManyAuthors(ids);
   }
 }

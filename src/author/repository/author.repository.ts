@@ -27,8 +27,13 @@ export class AuthorRepository {
     });
   }
 
-  async findAll(): Promise<Author[]> {
+  async findAll(ids?: string[]): Promise<Author[]> {
+    const where: Prisma.AuthorWhereInput | undefined = {
+      id: ids ? { in: ids } : undefined,
+    };
+
     const result = await this.prisma.author.findMany({
+      where,
       orderBy: {
         createdAt: 'desc',
       },
@@ -45,5 +50,15 @@ export class AuthorRepository {
       data,
     });
     return result;
+  }
+
+  async deleteMany(ids: string[]) {
+    await this.prisma.author.deleteMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
   }
 }

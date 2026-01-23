@@ -15,6 +15,9 @@ export enum ErrorCode {
   // Errores de author
   AUTHOR_NOT_FOUND = 'AUTHOR_001',
 
+  // Errores de imagen
+  IMAGE_NOT_FOUND = 'IMAGE_001',
+
   // Otros errores generales
   INTERNAL_SERVER_ERROR = 'SERVER_001',
   BAD_REQUEST = 'COMMON_001',
@@ -62,6 +65,12 @@ export const ErrorCodeMap: Record<
   [ErrorCode.AUTHOR_NOT_FOUND]: {
     status: HttpStatus.NOT_FOUND,
     message: 'Author no encontrado.',
+  },
+
+  // Errores de imagen
+  [ErrorCode.IMAGE_NOT_FOUND]: {
+    status: HttpStatus.NOT_FOUND,
+    message: 'Imagen no encontrada.',
   },
 
   // Otros errores generales

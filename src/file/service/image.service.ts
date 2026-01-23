@@ -6,6 +6,8 @@ import { ImageRequest } from '../request/image.request';
 import { catchError, firstValueFrom } from 'rxjs';
 import { Transactional } from 'src/global/decorators/transactional.decorator';
 import { ImageResponse } from '../response/image.response';
+import { ApiException } from 'src/global/exception/api.exception';
+import { ErrorCode } from 'src/global/enum/error-code.enum';
 
 @Injectable()
 export class ImageService {
@@ -76,7 +78,10 @@ export class ImageService {
   }
 
   @Transactional()
-  async updateImages(request: ImageRequest): Promise<ImageResponse[]> {
+  async updateImages(
+    id: string,
+    request: ImageRequest,
+  ): Promise<ImageResponse[]> {
     const { data: images } = await firstValueFrom(
       this.httpSerivce
         .put<string[]>(`${this.FILE_URL}/vantahub/update`, request)
@@ -87,10 +92,29 @@ export class ImageService {
           }),
         ),
     );
-    const savedImages = await this.imageRepository.saveAll(images);
-    const response: ImageResponse[] = savedImages.map((image) =>
+    const updateImages = await this.imageRepository.update(id, images);
+    const response: ImageResponse[] = updateImages.map((image) =>
       ImageResponse.fromModel(image),
     );
     return response;
+  }
+
+  @Transactional()
+  async deleteImages(ids: string[], request: ImageRequest): Promise<void> {
+    const existingImages = await this.imageRepository.findAll(ids);
+    if (existingImages.length !== ids.length) {
+      throw new ApiException(ErrorCode.IMAGE_NOT_FOUND);
+    }
+    await firstValueFrom(
+      this.httpSerivce
+        .delete<string[]>(`${this.FILE_URL}/vantahub/delete`, { data: request })
+        .pipe(
+          catchError((error) => {
+            this.LOGGER.error('Error uploading image', error);
+            throw error;
+          }),
+        ),
+    );
+    await this.imageRepository.deleteMany(ids);
   }
 }

@@ -25,4 +25,41 @@ export class ImageRepository {
     );
     return result;
   }
+
+  findAll(ids: string[]) {
+    return this.prisma.image.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+  }
+
+  deleteMany(ids: string[]) {
+    return this.prisma.image.deleteMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+  }
+
+  async update(id: string, images: string[]) {
+    const existingImages = await this.prisma.image.findMany({
+      where: {
+        id,
+      },
+    });
+    await this.prisma.image.deleteMany({
+      where: {
+        id: {
+          in: existingImages.map((img) => img.id),
+        },
+      },
+    });
+    const result = await this.saveAll(images);
+    return result;
+  }
 }
