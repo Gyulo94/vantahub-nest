@@ -22,7 +22,7 @@ export class AuthorController {
   @Post('create')
   @Message(ResponseMessage.CREATE_AUTHOR_SUCCESS)
   async create(@Body() request: AuthorRequest): Promise<AuthorResponse> {
-    const response = await this.authorService.createAuthor(request);
+    const response = await this.authorService.create(request);
     return response;
   }
 
@@ -45,7 +45,7 @@ export class AuthorController {
     @Param('id') id: string,
     @Body() request: AuthorRequest,
   ): Promise<AuthorResponse> {
-    const response = await this.authorService.updateAuthor(id, request);
+    const response = await this.authorService.update(id, request);
     return response;
   }
 
@@ -53,6 +53,6 @@ export class AuthorController {
   @Delete('delete')
   @Message(ResponseMessage.DELETE_AUTHOR_SUCCESS)
   async deleteManyAuthors(@Body('ids') ids: string[]): Promise<void> {
-    await this.authorService.deleteManyAuthors(ids);
+    await this.authorService.deleteMany(ids);
   }
 }

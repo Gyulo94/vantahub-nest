@@ -16,7 +16,7 @@ export class AuthorService {
   ) {}
 
   @Transactional()
-  async createAuthor(request: AuthorRequest): Promise<AuthorResponse> {
+  async create(request: AuthorRequest): Promise<AuthorResponse> {
     const newAuthorEntity = await this.authorRepository.save(
       AuthorRequest.toModel(request),
     );
@@ -53,7 +53,7 @@ export class AuthorService {
     return response;
   }
 
-  async updateAuthor(id: string, request: AuthorRequest) {
+  async update(id: string, request: AuthorRequest) {
     const author = await this.authorRepository.findById(id);
     if (!author) {
       throw new ApiException(ErrorCode.AUTHOR_NOT_FOUND);
@@ -83,7 +83,7 @@ export class AuthorService {
   }
 
   @Transactional()
-  async deleteManyAuthors(ids: string[]): Promise<void> {
+  async deleteMany(ids: string[]): Promise<void> {
     const authors = await this.authorRepository.findAll(ids);
     if (authors.length !== ids.length) {
       throw new ApiException(ErrorCode.AUTHOR_NOT_FOUND);
