@@ -17,8 +17,30 @@ export class CategoryRepository {
     });
   }
 
-  async findAll(): Promise<Category[]> {
-    const result = await this.prisma.category.findMany({});
+  async findAll(ids?: string[]): Promise<Category[]> {
+    const where: Prisma.CategoryWhereInput | undefined = {
+      id: ids ? { in: ids } : undefined,
+    };
+
+    const result = await this.prisma.category.findMany({ where });
     return result;
+  }
+
+  async update(id: string, data: Prisma.CategoryCreateInput) {
+    const result = await this.prisma.category.update({
+      where: { id },
+      data,
+    });
+    return result;
+  }
+
+  deleteMany(ids: string[]) {
+    return this.prisma.category.deleteMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
   }
 }

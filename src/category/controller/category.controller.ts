@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { CategoryService } from '../service/category.service';
 import { CategoryRequest } from '../request/category.request';
 import { Role } from 'src/global/decorators/role.decorator';
@@ -14,7 +22,7 @@ export class CategoryController {
   @Post('create')
   @Message(ResponseMessage.CREATE_CATEGORY_SUCCESS)
   async create(@Body() request: CategoryRequest): Promise<CategoryResponse> {
-    const response = await this.categoryService.createCategory(request);
+    const response = await this.categoryService.create(request);
     return response;
   }
 
@@ -22,5 +30,29 @@ export class CategoryController {
   async findAll(): Promise<CategoryResponse[]> {
     const response = await this.categoryService.findAll();
     return response;
+  }
+
+  @Get(':id')
+  async findById(@Param('id') id: string): Promise<CategoryResponse> {
+    const response = await this.categoryService.findById(id);
+    return response;
+  }
+
+  @Role('ADMIN')
+  @Put('update/:id')
+  @Message(ResponseMessage.UPDATE_CATEGORY_SUCCESS)
+  async updateCategory(
+    @Param('id') id: string,
+    @Body() request: CategoryRequest,
+  ): Promise<CategoryResponse> {
+    const response = await this.categoryService.update(id, request);
+    return response;
+  }
+
+  @Role('ADMIN')
+  @Delete('delete')
+  @Message(ResponseMessage.DELETE_CATEGORY_SUCCESS)
+  async deleteManyCategories(@Body('ids') ids: string[]): Promise<void> {
+    await this.categoryService.deleteMany(ids);
   }
 }

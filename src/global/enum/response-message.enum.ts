@@ -8,4 +8,6 @@ export enum ResponseMessage {
   UPDATE_AUTHOR_SUCCESS = 'El autor se ha cambiado exitosamente.',
   DELETE_AUTHOR_SUCCESS = 'El autor se ha eliminado exitosamente.',
   CREATE_CATEGORY_SUCCESS = 'La categoría se ha creado exitosamente.',
+  UPDATE_CATEGORY_SUCCESS = 'La categoría se ha cambiado exitosamente.',
+  DELETE_CATEGORY_SUCCESS = 'La categoría se ha eliminado exitosamente.',
 }

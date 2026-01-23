@@ -15,6 +15,9 @@ export enum ErrorCode {
   // Errores de author
   AUTHOR_NOT_FOUND = 'AUTHOR_001',
 
+  // Errores de category
+  CATEGORY_NOT_FOUND = 'CATEGORY_001',
+
   // Errores de imagen
   IMAGE_NOT_FOUND = 'IMAGE_001',
 
@@ -65,6 +68,12 @@ export const ErrorCodeMap: Record<
   [ErrorCode.AUTHOR_NOT_FOUND]: {
     status: HttpStatus.NOT_FOUND,
     message: 'Author no encontrado.',
+  },
+
+  // Errores de category
+  [ErrorCode.CATEGORY_NOT_FOUND]: {
+    status: HttpStatus.NOT_FOUND,
+    message: 'Categoría no encontrada.',
   },
 
   // Errores de imagen

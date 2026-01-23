@@ -84,8 +84,6 @@ export class AuthorService {
 
   @Transactional()
   async deleteManyAuthors(ids: string[]): Promise<void> {
-    console.log('ids: ', ids);
-
     const authors = await this.authorRepository.findAll(ids);
     if (authors.length !== ids.length) {
       throw new ApiException(ErrorCode.AUTHOR_NOT_FOUND);
