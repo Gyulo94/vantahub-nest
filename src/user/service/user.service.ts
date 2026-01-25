@@ -9,7 +9,7 @@ import { v4 as uuid } from 'uuid';
 import { UserRepository } from '../repository/user.repository';
 import { UserRequest } from '../request/user.request';
 import { UserResponse } from '../reponse/user.response';
-import { ImageService } from 'src/file/service/image.service';
+import { ImageService } from 'src/image/service/image.service';
 
 @Injectable()
 export class UserService {

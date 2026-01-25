@@ -1,5 +1,5 @@
 import { Author, Image } from '@prisma/client';
-import { ImageResponse } from 'src/file/response/image.response';
+import { ImageResponse } from 'src/image/response/image.response';
 
 export class AuthorResponse {
   id: string;

@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { AuthorRequest } from '../request/author.request';
 import { AuthorRepository } from '../repository/author.repository';
-import { ImageService } from 'src/file/service/image.service';
+import { ImageService } from 'src/image/service/image.service';
 import { Transactional } from 'src/global/decorators/transactional.decorator';
-import { ImageResponse } from 'src/file/response/image.response';
+import { ImageResponse } from 'src/image/response/image.response';
 import { AuthorResponse } from '../response/author.response';
 import { ApiException } from 'src/global/exception/api.exception';
 import { ErrorCode } from 'src/global/enum/error-code.enum';

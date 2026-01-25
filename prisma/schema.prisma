@@ -37,6 +37,15 @@ model User {
   @@index([provider])
 }
 
+model Pdf {
+  id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  url           String
+  book          Book?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+
 model Image {
   id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   url           String
@@ -48,7 +57,7 @@ model Image {
 }
 
 model Book {
-  id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id            Int       @id @default(autoincrement())
   title         String
   authorId      String       @db.Uuid
   description   String?
@@ -56,14 +65,15 @@ model Book {
   publishedAt   DateTime     @default(now())
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
-  pdfUrl        String?
   slug          String       @unique
-  totalPages    Int?
+  totalPages    Int       @default(0)
   
   imageId      String?      @db.Uuid @unique
+  pdfId        String?      @db.Uuid @unique
   image        Image?       @relation(fields: [imageId], references: [id])
   category      Category     @relation(fields: [categoryId], references: [id])
   author       Author       @relation(fields: [authorId], references: [id])
+  pdf          Pdf?         @relation(fields: [pdfId], references: [id])
   readingProgresses ReadingProgress[]
   reviews       Review[]
 
@@ -94,7 +104,7 @@ model Category {
 model ReadingProgress {
   id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId        String    @db.Uuid
-  bookId        String    @db.Uuid
+  bookId        Int       
   currentPage   Int       @default(1)
   lastReadAt    DateTime  @updatedAt
   startedAt     DateTime  @default(now())
@@ -109,7 +119,7 @@ model ReadingProgress {
 model Review {
   id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId        String    @db.Uuid
-  bookId        String    @db.Uuid
+  bookId        Int       
   rating        Int
   comment       String?
   createdAt     DateTime  @default(now())

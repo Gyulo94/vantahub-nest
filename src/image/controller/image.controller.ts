@@ -5,15 +5,9 @@ import { Public } from 'src/global/decorators/public.decorator';
 import { ImageResponse } from '../response/image.response';
 
 @Public()
-@Controller('file')
-export class FileController {
+@Controller('image')
+export class ImageController {
   constructor(private readonly imageService: ImageService) {}
-
-  @Post('image/upload')
-  async uploadImage(request: ImageRequest): Promise<string[]> {
-    const response: string[] = await this.imageService.uploadImage(request);
-    return response;
-  }
 
   @Post('image/create')
   async createImages(request: ImageRequest): Promise<ImageResponse[]> {

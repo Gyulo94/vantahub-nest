@@ -19,28 +19,6 @@ export class ImageService {
 
   private FILE_URL = process.env.FILE_URL;
 
-  async uploadImage(request: ImageRequest): Promise<string[]> {
-    this.LOGGER.log(
-      `--------------------이미지 업로드 서비스 실행--------------------`,
-    );
-    console.log(request);
-
-    this.LOGGER.log(`1. 이미지 업로드 중`);
-    const { data: images } = await firstValueFrom(
-      this.httpSerivce.post<string[]>(`${this.FILE_URL}/images`, request).pipe(
-        catchError((error) => {
-          this.LOGGER.error('Error uploading image', error);
-          throw error;
-        }),
-      ),
-    );
-    this.LOGGER.log(`2. 이미지 업로드 완료`);
-    this.LOGGER.log(
-      `--------------------이미지 업로드 서비스 종료--------------------`,
-    );
-    return images;
-  }
-
   async createUserImage(url: string): Promise<Image> {
     let userImage: Image;
     this.LOGGER.log(

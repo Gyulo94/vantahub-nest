@@ -10,12 +10,14 @@ import { AuthModule } from './auth/auth.module';
 import { EmailModule } from './email/email.module';
 import { RedisModule } from './redis/redis.module';
 import { UserModule } from './user/user.module';
-import { FileModule } from './file/file.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtGuard } from './auth/guards/jwt.guard';
 import { RoleGuard } from './auth/guards/role.guard';
 import { AuthorModule } from './author/author.module';
 import { CategoryModule } from './category/category.module';
+import { BookModule } from './book/book.module';
+import { PdfModule } from './pdf/pdf.module';
+import { ImageModule } from './image/image.module';
 @Module({
   imports: [
     GlobalModule,
@@ -23,9 +25,11 @@ import { CategoryModule } from './category/category.module';
     EmailModule,
     RedisModule,
     UserModule,
-    FileModule,
+    PdfModule,
+    ImageModule,
     AuthorModule,
     CategoryModule,
+    BookModule,
   ],
   controllers: [],
   providers: [

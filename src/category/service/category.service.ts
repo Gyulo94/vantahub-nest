@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CategoryRequest } from '../request/category.request';
 import { CategoryRepository } from '../repository/category.repository';
-import { ImageService } from 'src/file/service/image.service';
+import { ImageService } from 'src/image/service/image.service';
 import { Transactional } from 'src/global/decorators/transactional.decorator';
 import { CategoryResponse } from '../response/category.response';
 import { ErrorCode } from 'src/global/enum/error-code.enum';
