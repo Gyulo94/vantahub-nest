@@ -5,7 +5,8 @@ export class PdfResponse {
   url: string;
   totalPages?: number;
 
-  static fromModel(pdf: Pdf & { totalPages?: number }): PdfResponse {
+  static fromModel(pdf?: Pdf & { totalPages?: number }): PdfResponse | null {
+    if (!pdf) return null;
     const { id, url, totalPages } = pdf;
     return {
       id,

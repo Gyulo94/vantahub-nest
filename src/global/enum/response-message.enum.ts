@@ -15,4 +15,6 @@ export enum ResponseMessage {
   CREATE_BOOK_SUCCESS = 'El libro se ha creado exitosamente.',
   UPDATE_BOOK_SUCCESS = 'El libro se ha cambiado exitosamente.',
   DELETE_BOOK_SUCCESS = 'El libro se ha eliminado exitosamente.',
+
+  CREATE_REVIEW_SUCCESS = 'La reseña se ha creado exitosamente.',
 }

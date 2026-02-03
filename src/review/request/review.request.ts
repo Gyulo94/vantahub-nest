@@ -1,14 +1,30 @@
 import { Prisma } from '@prisma/client';
-import { IsNumber, IsOptional } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
 export class ReviewRequest {
   @IsNumber()
-  @IsOptional()
   bookId: number;
 
-  static toModel(request: ReviewRequest): Prisma.ReviewWhereInput {
-    const model = new ReviewRequest();
-    model.bookId = request.bookId;
+  @IsNumber()
+  rating: number;
+
+  @IsString()
+  comment: string;
+
+  static toModel(
+    request: ReviewRequest,
+    userId: string,
+  ): Prisma.ReviewCreateInput {
+    const model: Prisma.ReviewCreateInput = {
+      book: {
+        connect: { id: request.bookId },
+      },
+      user: {
+        connect: { id: userId },
+      },
+      rating: request.rating,
+      comment: request.comment,
+    };
     return model;
   }
 }

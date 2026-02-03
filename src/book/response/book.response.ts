@@ -14,6 +14,8 @@ export class BookResponse {
   image: ImageResponse;
   category: CategoryResponse;
   author: AuthorResponse;
+  rating: number;
+  reviewCount: number;
   totalPages: number;
   createdAt: Date;
   updatedAt: Date;
@@ -40,6 +42,8 @@ export class BookResponse {
     response.author = model.author
       ? AuthorResponse.fromModel(model.author)
       : null;
+    response.rating = model.rating;
+    response.reviewCount = model.reviewCount;
     response.totalPages = model.totalPages;
     response.createdAt = model.createdAt;
     response.updatedAt = model.updatedAt;

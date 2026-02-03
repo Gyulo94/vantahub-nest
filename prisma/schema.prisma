@@ -67,6 +67,8 @@ model Book {
   updatedAt     DateTime     @updatedAt
   slug          String       @unique
   totalPages    Int       @default(0)
+  rating        Float     @default(0)
+  reviewCount   Int       @default(0)
   
   imageId      String?      @db.Uuid @unique
   pdfId        String?      @db.Uuid @unique
@@ -78,6 +80,9 @@ model Book {
   reviews       Review[]
 
   @@index([title])
+  @@index([reviewCount])
+  @@index([categoryId])
+  @@index([rating])
   @@index([authorId])
   @@index([publishedAt]) 
 }
