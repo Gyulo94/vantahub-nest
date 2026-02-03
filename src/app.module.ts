@@ -18,6 +18,7 @@ import { CategoryModule } from './category/category.module';
 import { BookModule } from './book/book.module';
 import { PdfModule } from './pdf/pdf.module';
 import { ImageModule } from './image/image.module';
+import { ReviewModule } from './review/review.module';
 @Module({
   imports: [
     GlobalModule,
@@ -30,6 +31,7 @@ import { ImageModule } from './image/image.module';
     AuthorModule,
     CategoryModule,
     BookModule,
+    ReviewModule,
   ],
   controllers: [],
   providers: [

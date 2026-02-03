@@ -33,7 +33,7 @@ export class BookRepository {
         image: true,
         pdf: true,
         category: true,
-        author: true,
+        author: { include: { image: true } },
       },
     });
   }
