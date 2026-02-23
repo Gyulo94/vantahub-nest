@@ -9,7 +9,6 @@ import { ApiException } from 'src/global/exception/api.exception';
 import { ErrorCode } from 'src/global/enum/error-code.enum';
 import { PdfService } from 'src/pdf/service/pdf.service';
 import { PdfResponse } from 'src/pdf/response/pdf.response';
-import { extractTextFromPDF } from 'src/global/utils/pdf.utils';
 
 @Injectable()
 export class BookService {
@@ -131,14 +130,5 @@ export class BookService {
 
     await this.imageService.deleteImages(imageIds, request);
     await this.bookRepository.deleteMany(ids);
-  }
-
-  async readingBook(id: number) {
-    const book = await this.bookRepository.findById(id);
-    if (!book) {
-      throw new ApiException(ErrorCode.BOOK_NOT_FOUND);
-    }
-    const extractedText = await extractTextFromPDF(book.pdf.url);
-    return extractedText;
   }
 }
