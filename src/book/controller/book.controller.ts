@@ -13,6 +13,7 @@ import { Role } from 'src/global/decorators/role.decorator';
 import { BookResponse } from '../response/book.response';
 import { Message } from 'src/global/decorators/message.decorator';
 import { ResponseMessage } from 'src/global/enum/response-message.enum';
+import { Public } from 'src/global/decorators/public.decorator';
 
 @Controller('book')
 export class BookController {
@@ -35,6 +36,13 @@ export class BookController {
   @Get(':id')
   async findById(@Param('id') id: number): Promise<BookResponse> {
     const response = await this.bookService.findById(+id);
+    return response;
+  }
+
+  @Public()
+  @Get('read/:id')
+  async readBook(@Param('id') id: number) {
+    const response = await this.bookService.readingBook(+id);
     return response;
   }
 
