@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { BookService } from '../service/book.service';
 import { BookRequest } from '../request/book.request';
@@ -13,6 +14,7 @@ import { Role } from 'src/global/decorators/role.decorator';
 import { BookResponse } from '../response/book.response';
 import { Message } from 'src/global/decorators/message.decorator';
 import { ResponseMessage } from 'src/global/enum/response-message.enum';
+import { BookFilter } from '../request/book.filter';
 
 @Controller('book')
 export class BookController {
@@ -27,8 +29,8 @@ export class BookController {
   }
 
   @Get('all')
-  async findAll(): Promise<BookResponse[]> {
-    const response = await this.bookService.findAll();
+  async findAll(@Query() filter: BookFilter) {
+    const response = await this.bookService.findAll(filter);
     return response;
   }
 

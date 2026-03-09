@@ -24,6 +24,9 @@ export enum ErrorCode {
   // Errores de review
   REVIEW_ALREADY_EXISTS = 'REVIEW_001',
 
+  // Errores de note
+  NOTE_NOT_FOUND = 'NOTE_001',
+
   // Errores de imagen
   IMAGE_NOT_FOUND = 'IMAGE_001',
 
@@ -92,6 +95,12 @@ export const ErrorCodeMap: Record<
   [ErrorCode.REVIEW_ALREADY_EXISTS]: {
     status: HttpStatus.BAD_REQUEST,
     message: 'La reseña ya existe para este libro y usuario.',
+  },
+
+  // Errores de note
+  [ErrorCode.NOTE_NOT_FOUND]: {
+    status: HttpStatus.NOT_FOUND,
+    message: 'Nota no encontrada.',
   },
 
   // Errores de imagen

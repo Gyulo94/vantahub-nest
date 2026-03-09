@@ -25,4 +25,33 @@ export class NoteRepository {
     });
     return result;
   }
+
+  async findById(id: string, userId: string) {
+    const result = await this.prisma.note.findUnique({
+      where: {
+        id,
+        userId,
+      },
+    });
+    return result;
+  }
+
+  async update(data: Prisma.NoteUpdateInput, id: string) {
+    const result = await this.prisma.note.update({
+      where: {
+        id,
+      },
+      data,
+    });
+    return result;
+  }
+
+  async delete(id: string, userId: string) {
+    await this.prisma.note.delete({
+      where: {
+        id,
+        userId,
+      },
+    });
+  }
 }

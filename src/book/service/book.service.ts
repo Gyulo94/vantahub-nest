@@ -9,6 +9,7 @@ import { ApiException } from 'src/global/exception/api.exception';
 import { ErrorCode } from 'src/global/enum/error-code.enum';
 import { PdfService } from 'src/pdf/service/pdf.service';
 import { PdfResponse } from 'src/pdf/response/pdf.response';
+import { BookFilter } from '../request/book.filter';
 
 @Injectable()
 export class BookService {
@@ -53,10 +54,16 @@ export class BookService {
     return response;
   }
 
-  async findAll(): Promise<BookResponse[]> {
-    const books = await this.bookRepository.findAll();
-    const response = books.map((book) => BookResponse.fromModel(book));
-    return response;
+  async findAll(filter?: BookFilter) {
+    const result = await this.bookRepository.findAll(filter);
+    const books = result.books.map((book) => BookResponse.fromModel(book));
+    const { page, limit, totalCount } = result;
+    return {
+      books,
+      page,
+      limit,
+      totalCount,
+    };
   }
 
   async findById(id: number): Promise<BookResponse> {
@@ -68,6 +75,7 @@ export class BookService {
     return response;
   }
 
+  @Transactional()
   async update(id: number, request: BookRequest) {
     const book = await this.bookRepository.findById(id);
     if (!book) {
@@ -114,7 +122,7 @@ export class BookService {
 
   @Transactional()
   async deleteMany(ids: number[]): Promise<void> {
-    const books = await this.bookRepository.findAll(ids);
+    const books = await this.bookRepository.findByIds(ids);
     if (books.length !== ids.length) {
       throw new ApiException(ErrorCode.BOOK_NOT_FOUND);
     }
